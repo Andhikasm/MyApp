@@ -21,6 +21,7 @@ public class Note implements Serializable {
 
     public Note(long dateInMillis, String title, String content) {
         mDateTime = dateInMillis;
+
         mTitle = title;
         mContent = content;
     }

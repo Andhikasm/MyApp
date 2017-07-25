@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     protected DrawerLayout mDrawer;
 
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitle("Home");
 
 
+        mAuth = FirebaseAuth.getInstance();
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -52,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -78,9 +85,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -92,14 +99,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id){
             case R.id.calculator:
                 fragment = new CalculatorActivity();
-//                intent = new Intent(this, CalculatorActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                startActivity(intent);
                 break;
-
             case R.id.notebook:
                 fragment = new NotebookActivity();
                 break;
+            case R.id.settings:
+                intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
         }
         if(fragment != null){
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -107,12 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             ft.addToBackStack(null);
             ft.commit();
         }
-
-
-//        FragmentManager manager = getFragmentManager();
-//        manager.beginTransaction().replace(R.id.activity_calculator, fragment).commit();
-//        transaction.addToBackStack(null);
-//        transaction.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
