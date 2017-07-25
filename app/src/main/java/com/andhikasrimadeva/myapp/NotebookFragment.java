@@ -1,16 +1,9 @@
 package com.andhikasrimadeva.myapp;
 
-import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-public class NotebookActivity extends Fragment{
+public class NotebookFragment extends Fragment{
 
     private ListView mListViewNotes;
     private View parentView;
@@ -100,24 +93,22 @@ public class NotebookActivity extends Fragment{
             final NoteAdapter na = new NoteAdapter(getContext(), R.layout.notebook_note, notes);
             mListViewNotes.setAdapter(na);
 
-            //set click listener for items in the list, by clicking each item the note should be loaded into NoteActivity
+            //set click listener for items in the list, by clicking each item the note should be loaded into EditNoteFragment
             mListViewNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //run the NoteActivity in view/edit mode
+                    //run the EditNoteFragment in view/edit mode
                     String fileName = ((Note) mListViewNotes.getItemAtPosition(position)).getDateTime()
                             + Utilities.FILE_EXTENSION;
 
-//                    Intent viewNoteIntent = new Intent(getContext(), NoteActivity.class);
-//                    viewNoteIntent.putExtra(Utilities.EXTRAS_NOTE_FILENAME, fileName);
-//                    startActivity(viewNoteIntent);
-
-                    Fragment noteActivity = new NoteActivity();
+                    Fragment noteActivity = new EditNoteFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString(Utilities.EXTRAS_NOTE_FILENAME, fileName);
                     noteActivity.setArguments(bundle);
+
                     FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.content_main, noteActivity);
+                    fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 }
             });
@@ -133,9 +124,9 @@ public class NotebookActivity extends Fragment{
         Fragment fragment = null;
 
         switch (item.getItemId()) {
-            case R.id.action_create: //run NoteActivity in new note mode
-//                startActivity(new Intent(this, NoteActivity.class));
-                fragment = new NoteActivity();
+            case R.id.action_create: //run EditNoteFragment in new note mode
+//                startActivity(new Intent(this, EditNoteFragment.class));
+                fragment = new EditNoteFragment();
                 break;
         }
 

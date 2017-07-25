@@ -1,10 +1,10 @@
 package com.andhikasrimadeva.myapp;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,10 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class NoteActivity extends Fragment {
+public class EditNoteFragment extends Fragment {
 
     private boolean mIsViewingOrUpdating; //state of the activity
     private long mNoteCreationTime;
@@ -39,7 +40,6 @@ public class NoteActivity extends Fragment {
             mFileName = getArguments().getString(Utilities.EXTRAS_NOTE_FILENAME);
         }
 
-//        mFileName = getIntent().getStringExtra(Utilities.EXTRAS_NOTE_FILENAME);
         if(mFileName != null && !mFileName.isEmpty() && mFileName.endsWith(Utilities.FILE_EXTENSION)) {
             mLoadedNote = Utilities.getNoteByFileName(getContext(), mFileName);
             if (mLoadedNote != null) {
@@ -55,42 +55,6 @@ public class NoteActivity extends Fragment {
         }
         return parentView;
     }
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_note);
-//
-//        mEtTitle = (EditText) findViewById(R.id.note_et_title);
-//        mEtContent = (EditText) findViewById(R.id.note_et_content);
-//
-//        //check if view/edit note bundle is set, otherwise user wants to create new note
-//        mFileName = getIntent().getStringExtra(Utilities.EXTRAS_NOTE_FILENAME);
-//        if(mFileName != null && !mFileName.isEmpty() && mFileName.endsWith(Utilities.FILE_EXTENSION)) {
-//            mLoadedNote = Utilities.getNoteByFileName(getApplicationContext(), mFileName);
-//            if (mLoadedNote != null) {
-//                //update the widgets from the loaded note
-//                mEtTitle.setText(mLoadedNote.getTitle());
-//                mEtContent.setText(mLoadedNote.getContent());
-//                mNoteCreationTime = mLoadedNote.getDateTime();
-//                mIsViewingOrUpdating = true;
-//            }
-//        } else { //user wants to create a new note
-//            mNoteCreationTime = System.currentTimeMillis();
-//            mIsViewingOrUpdating = false;
-//        }
-//    }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        //load menu based on the state we are in (new, view/update/delete)
-//        if(mIsViewingOrUpdating) { //user is viewing or updating a note
-//            getMenuInflater().inflate(R.menu.menu_note_view, menu);
-//        } else { //user wants to create a new note
-//            getMenuInflater().inflate(R.menu.menu_note_add, menu);
-//        }
-//        return true;
-//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -153,7 +117,10 @@ public class NoteActivity extends Fragment {
                             Toast.makeText(getContext(), "can not delete the note '" + mLoadedNote.getTitle() + "'"
                                     , Toast.LENGTH_SHORT).show();
                         }
+
                         //finish();
+
+                        getFragmentManager().popBackStack();
                     }
                 })
                 .setNegativeButton("NO", null); //do nothing on clicking NO button :P
@@ -162,12 +129,21 @@ public class NoteActivity extends Fragment {
     }
 
     /**
+     * This method is used to hide soft keyboard
+     */
+    public void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    /**
      * Handle cancel action
      */
     private void actionCancel() {
 
         if(!checkNoteAltred()) { //if note is not altered by user (user only viewed the note/or did not write anything)
-            getActivity().finish(); //just exit the activity and go back to MainActivity
+            //getActivity().finish(); //just exit the activity and go back to MainActivity
+            getFragmentManager().popBackStack();
         } else { //we want to remind user to decide about saving the changes or not, by showing a dialog
             AlertDialog.Builder dialogCancel = new AlertDialog.Builder(getContext())
                     .setTitle("discard changes...")
@@ -234,6 +210,9 @@ public class NoteActivity extends Fragment {
                     "on your device", Toast.LENGTH_SHORT).show();
         }
 
+        hideSoftKeyboard(getActivity());
+
+        getFragmentManager().popBackStack();
         //getActivity().finish(); //exit the activity, should return us to MainActivity
     }
 }
