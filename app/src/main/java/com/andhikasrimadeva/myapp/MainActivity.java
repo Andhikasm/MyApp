@@ -93,6 +93,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.notebook:
                 fragment = new NotebookFragment();
                 break;
+            case R.id.google:
+                fragment = new GoogleFragment();
+                break;
             case R.id.settings:
                 intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);

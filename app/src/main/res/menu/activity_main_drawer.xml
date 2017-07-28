@@ -11,7 +11,10 @@
             android:icon="@drawable/ic_class_black_24dp"
             android:title="Notebook" />
 
-
+        <item
+            android:id="@+id/google"
+            android:icon="@drawable/ic_search_black_24dp"
+            android:title="Google"/>
     </group>
 
     <item
