@@ -2,6 +2,7 @@ package com.andhikasrimadeva.myapp;
 
 
 
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
         setTitle("Home");
 
-
         mAuth = FirebaseAuth.getInstance();
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -48,7 +48,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle("Home");
+    }
 
     @Override
     public void onBackPressed() {
@@ -101,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
         }
         if(fragment != null){
+
+            getSupportFragmentManager().popBackStack();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
             ft.addToBackStack(null);
