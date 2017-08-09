@@ -26,9 +26,6 @@ public class NoteAdapter extends ArrayAdapter<Note> {
         super(context, resource, objects);
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
