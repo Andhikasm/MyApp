@@ -2,7 +2,7 @@ package com.andhikasrimadeva.myapp;
 
 
 
-import android.support.v4.app.FragmentManager;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +16,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import calculator.CalculatorActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -26,6 +31,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+//    @Override
+//    public void onAttachFragment(android.app.Fragment fragment) {
+//        super.onAttachFragment(fragment);
+//        setTitle("Home");
+//    }
+//
+//    @Override
+//    protected void onResumeFragments() {
+//        super.onResumeFragments();
+//        setTitle("Home");
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,11 +121,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
         }
         if(fragment != null){
-
+            RelativeLayout r = (RelativeLayout) findViewById(R.id.content_main);
+            r.removeAllViews();
             getSupportFragmentManager().popBackStack();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
-            ft.addToBackStack(null);
+
+//            ft.addToBackStack(null);
             ft.commit();
         }
 

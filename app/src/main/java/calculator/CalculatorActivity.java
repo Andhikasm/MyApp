@@ -1,4 +1,4 @@
-package com.andhikasrimadeva.myapp;
+package calculator;
 
 import android.support.annotation.Nullable;
 
@@ -45,6 +45,18 @@ public class CalculatorActivity extends Fragment {
         setOperatorOnClickListener();
         return parentView;
 
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 
     @Override

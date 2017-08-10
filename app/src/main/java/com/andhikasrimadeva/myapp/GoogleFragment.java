@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ public class GoogleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -59,6 +61,12 @@ public class GoogleFragment extends Fragment {
         webView.setWebViewClient(new WebViewClient());
         // Inflate the layout for this fragment
         return parentView;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
     }
 
     @Override
