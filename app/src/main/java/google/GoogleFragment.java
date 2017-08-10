@@ -1,4 +1,4 @@
-package com.andhikasrimadeva.myapp;
+package google;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.andhikasrimadeva.myapp.R;
 
 
 public class GoogleFragment extends Fragment {

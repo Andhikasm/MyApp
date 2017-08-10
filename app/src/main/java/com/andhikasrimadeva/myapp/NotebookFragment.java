@@ -39,26 +39,6 @@ public class NotebookFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
     }
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_calculator2);
-//        setTitle("Notebook");
-////        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-////        setSupportActionBar(toolbar);
-////
-////        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-////        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-////                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-////        mDrawer.addDrawerListener(toggle);
-////        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//
-//        mListViewNotes = (ListView) findViewById(R.id.main_listview);
-//    }
-
-
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
