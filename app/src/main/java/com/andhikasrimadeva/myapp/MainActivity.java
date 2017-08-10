@@ -2,6 +2,7 @@ package com.andhikasrimadeva.myapp;
 
 
 
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,12 +10,14 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,17 +32,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-//    @Override
-//    public void onAttachFragment(android.app.Fragment fragment) {
-//        super.onAttachFragment(fragment);
-//        setTitle("Home");
-//    }
-//
-//    @Override
-//    protected void onResumeFragments() {
-//        super.onResumeFragments();
-//        setTitle("Home");
-//    }
+    private ViewPager viewPager;
+    private SectionsPagerAdapter sectionsPagerAdapter;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +55,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        viewPager = (ViewPager) findViewById(R.id.main_viewPager);
+        sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sectionsPagerAdapter);
+
+        tabLayout = (TabLayout) findViewById(R.id.main_tabs_layout);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     @Override
@@ -121,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(fragment != null){
             RelativeLayout r = (RelativeLayout) findViewById(R.id.content_main);
             r.removeAllViews();
+            tabLayout.setVisibility(View.GONE);
             getSupportFragmentManager().popBackStack();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_main, fragment);
