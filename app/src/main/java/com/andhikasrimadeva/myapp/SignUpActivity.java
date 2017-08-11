@@ -17,6 +17,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 
 public class SignUpActivity extends AppCompatActivity {
@@ -58,15 +62,13 @@ public class SignUpActivity extends AppCompatActivity {
             }
         };
 
-
-
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String emailEntered = _emailText.getText().toString();
                 String passwordEntered = _passwordText.getText().toString();
-
-                createAccount(emailEntered, passwordEntered);
+                String nameEntered = _nameText.getText().toString();
+                createAccount(emailEntered, passwordEntered, nameEntered);
             }
         });
 
@@ -79,25 +81,44 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void createAccount(String email, String password){
+    private void createAccount(String email, String password, final String name){
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                        if(task.isSuccessful()) {
+                            Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            String uID = mAuth.getCurrentUser().getUid();
+                            DatabaseReference myRef = database.getReference().child("Users").child(uID);
+
+                            HashMap<String, String> userMap = new HashMap<String, String>();
+                            userMap.put("name", name);
+                            userMap.put("image", "default");
+                            userMap.put("thumb_image", "default");
+
+                            myRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+
+                                    if(task.isSuccessful()) {
+                                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            });
+                        }
 
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-//                            Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed,
-//                                    Toast.LENGTH_SHORT).show();
+                        else {
+                            Toast.makeText(SignUpActivity.this, "Authentication failed, please try again",
+                                    Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                        }
-
                     }
                 });
     }

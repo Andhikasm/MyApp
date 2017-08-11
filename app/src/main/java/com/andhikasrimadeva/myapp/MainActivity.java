@@ -18,9 +18,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import calculator.CalculatorActivity;
 import google.GoogleFragment;
@@ -36,6 +43,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SectionsPagerAdapter sectionsPagerAdapter;
     private TabLayout tabLayout;
 
+    private ImageView navHeaderImage;
+    private TextView navHeaderName;
+    private TextView navHeaderEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +58,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mAuth = FirebaseAuth.getInstance();
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(toggle);
-        //drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        navHeaderImage = (ImageView) findViewById(R.id.nav_header_image);
+        navHeaderName = (TextView) findViewById(R.id.nav_header_name);
+//        navHeaderEmail = (TextView) findViewById(R.id.nav_header_email);
+
+//        navHeaderImage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+//
+//        databaseReference.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                String name = dataSnapshot.child("name").getValue().toString();
+//                String image = dataSnapshot.child("image").getValue().toString();
+//                String email = mAuth.getCurrentUser().getEmail();
+//                navHeaderName.setText(name);
+//                navHeaderEmail.setText(email);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
 
         viewPager = (ViewPager) findViewById(R.id.main_viewPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -93,11 +133,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
         //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
