@@ -43,7 +43,6 @@ public class ProfileActivity extends AppCompatActivity {
 //                String image = dataSnapshot.child("image").getValue().toString();
 //                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
                 displayName.setText(name);
-                Toast.makeText(ProfileActivity.this, dataSnapshot.getChildren().toString(), Toast.LENGTH_LONG).show();
             }
 
             @Override

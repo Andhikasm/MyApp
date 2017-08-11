@@ -64,37 +64,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        navHeaderImage = (ImageView) findViewById(R.id.nav_header_image);
-        navHeaderName = (TextView) findViewById(R.id.nav_header_name);
+        View headerLayout = navigationView.getHeaderView(0);
+        navHeaderImage = (ImageView) headerLayout.findViewById(R.id.nav_header_image);
+        navHeaderName = (TextView) headerLayout.findViewById(R.id.nav_header_name);
 //        navHeaderEmail = (TextView) findViewById(R.id.nav_header_email);
 
-//        navHeaderImage.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-//
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                String name = dataSnapshot.child("name").getValue().toString();
-//                String image = dataSnapshot.child("image").getValue().toString();
-//                String email = mAuth.getCurrentUser().getEmail();
-//                navHeaderName.setText(name);
-//                navHeaderEmail.setText(email);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String name = dataSnapshot.child("name").getValue().toString();
+                String image = dataSnapshot.child("image").getValue().toString();
+                String email = mAuth.getCurrentUser().getEmail();
+                navHeaderName.setText(name);
+                //navHeaderEmail.setText(email);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         viewPager = (ViewPager) findViewById(R.id.main_viewPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -102,12 +94,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabLayout = (TabLayout) findViewById(R.id.main_tabs_layout);
         tabLayout.setupWithViewPager(viewPager);
+
+        navHeaderImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         setTitle("Home");
+
+
     }
 
     @Override
