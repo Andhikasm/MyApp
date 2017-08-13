@@ -28,8 +28,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import calculator.CalculatorActivity;
+import de.hdodenhof.circleimageview.CircleImageView;
 import google.GoogleFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SectionsPagerAdapter sectionsPagerAdapter;
     private TabLayout tabLayout;
 
-    private ImageView navHeaderImage;
+    private CircleImageView navHeaderImage;
     private TextView navHeaderName;
     private TextView navHeaderEmail;
 
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerLayout = navigationView.getHeaderView(0);
-        navHeaderImage = (ImageView) headerLayout.findViewById(R.id.nav_header_image);
+        navHeaderImage = (CircleImageView) headerLayout.findViewById(R.id.nav_header_image);
         navHeaderName = (TextView) headerLayout.findViewById(R.id.nav_header_name);
         navHeaderEmail = (TextView) headerLayout.findViewById(R.id.nav_header_email);
 
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String email = mAuth.getCurrentUser().getEmail();
                 navHeaderName.setText(name);
                 navHeaderEmail.setText(email);
+                Picasso.with(MainActivity.this).load(image).into(navHeaderImage);
             }
 
             @Override

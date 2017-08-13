@@ -23,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -56,9 +57,10 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("name").getValue().toString();
-//                String image = dataSnapshot.child("image").getValue().toString();
+                String image = dataSnapshot.child("image").getValue().toString();
 //                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
                 displayName.setText(name);
+                Picasso.with(ProfileActivity.this).load(image).into(profileImage);
             }
 
             @Override
@@ -86,7 +88,11 @@ public class ProfileActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_PICK && resultCode == RESULT_OK) {
 
-
+            progressDialog = new ProgressDialog(ProfileActivity.this);
+            progressDialog.setTitle("Uploading image...");
+            progressDialog.setMessage("Please wait until the image has finished uploading");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
 
             Uri imageUri = data.getData();
 
@@ -104,11 +110,26 @@ public class ProfileActivity extends AppCompatActivity {
                 StorageReference filePath = mStorageRef.child("profile_images").child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
 
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
                         if(task.isSuccessful()) {
-                            Toast.makeText(ProfileActivity.this, "Successfully uploaded", Toast.LENGTH_LONG).show();
+
+                            final String download_url = task.getResult().getDownloadUrl().toString();
+
+                            databaseReference.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()) {
+                                        Picasso.with(ProfileActivity.this).load(download_url).into(profileImage);
+                                        progressDialog.dismiss();
+                                        Toast.makeText(ProfileActivity.this, "Successfully uploaded", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                            });
+
+
                         }
                         else{
                             Toast.makeText(ProfileActivity.this, "Error in uploading", Toast.LENGTH_LONG).show();
