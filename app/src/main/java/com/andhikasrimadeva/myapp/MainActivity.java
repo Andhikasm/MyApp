@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         View headerLayout = navigationView.getHeaderView(0);
         navHeaderImage = (ImageView) headerLayout.findViewById(R.id.nav_header_image);
         navHeaderName = (TextView) headerLayout.findViewById(R.id.nav_header_name);
-//        navHeaderEmail = (TextView) findViewById(R.id.nav_header_email);
+        navHeaderEmail = (TextView) headerLayout.findViewById(R.id.nav_header_email);
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
 
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String image = dataSnapshot.child("image").getValue().toString();
                 String email = mAuth.getCurrentUser().getEmail();
                 navHeaderName.setText(name);
-                //navHeaderEmail.setText(email);
+                navHeaderEmail.setText(email);
             }
 
             @Override
