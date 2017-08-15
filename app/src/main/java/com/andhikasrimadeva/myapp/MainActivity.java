@@ -140,12 +140,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(intent);
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        Intent intent = null;
+        switch (id) {
+            case R.id.action_users:
+                intent = new Intent(MainActivity.this, UsersActivity.class);
+                break;
+            default:
+                return true;
         }
+        startActivity(intent);
 
         return super.onOptionsItemSelected(item);
     }
