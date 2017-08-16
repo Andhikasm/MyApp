@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 navHeaderName.setText(name);
                 navHeaderEmail.setText(email);
                 if (!image.equals("default")){
-                    Picasso.with(MainActivity.this).load(image).into(navHeaderImage);
+                    Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.ic_face_black_64dp).into(navHeaderImage);
                 }
             }
 
