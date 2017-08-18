@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                String image = dataSnapshot.child("thumb_image").getValue().toString();
                 String email = mAuth.getCurrentUser().getEmail();
                 navHeaderName.setText(name);
                 navHeaderEmail.setText(email);

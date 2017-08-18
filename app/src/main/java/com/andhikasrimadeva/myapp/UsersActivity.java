@@ -1,5 +1,6 @@
 package com.andhikasrimadeva.myapp;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,9 @@ import android.widget.TextView;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UsersActivity extends AppCompatActivity {
 
@@ -40,7 +44,8 @@ public class UsersActivity extends AppCompatActivity {
         ) {
             @Override
             protected void populateViewHolder(UsersViewHolder viewHolder, Users model, int position) {
-                viewHolder.setName(model.getName());
+                viewHolder.setUserNameView(model.getName());
+                viewHolder.setUserImageView(model.getThumb_image(), getApplicationContext());
             }
         };
         mUsersList.setAdapter(firebaseRecyclerAdapter);
@@ -48,16 +53,21 @@ public class UsersActivity extends AppCompatActivity {
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
 
-        View mView;
+        TextView userNameView;
+        CircleImageView userImageView;
 
         public UsersViewHolder(View itemView) {
             super(itemView);
-            mView = itemView;
+            userNameView = (TextView) itemView.findViewById(R.id.user_single_name);
+            userImageView = (CircleImageView) itemView.findViewById(R.id.user_single_image);
         }
 
-        public void setName(String name) {
-            TextView userNameView = (TextView) mView.findViewById(R.id.user_single_name);
+        public void setUserNameView(String name) {
             userNameView.setText(name);
+        }
+
+        public void setUserImageView(String thumb_image, Context context) {
+            Picasso.with(context).load(thumb_image).placeholder(R.mipmap.ic_avatar).into(userImageView);
         }
     }
 }
