@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -71,26 +72,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navHeaderName = (TextView) headerLayout.findViewById(R.id.nav_header_name);
         navHeaderEmail = (TextView) headerLayout.findViewById(R.id.nav_header_email);
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
-                String email = mAuth.getCurrentUser().getEmail();
-                navHeaderName.setText(name);
-                navHeaderEmail.setText(email);
-                Picasso.with(MainActivity.this).load(image).into(navHeaderImage);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
         viewPager = (ViewPager) findViewById(R.id.main_viewPager);
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sectionsPagerAdapter);
@@ -110,11 +91,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        String uID = mAuth.getCurrentUser().getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference("Users").child(uID);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                String name = dataSnapshot.child("name").getValue().toString();
+                String image = dataSnapshot.child("thumb_image").getValue().toString();
+                String email = mAuth.getCurrentUser().getEmail();
+                navHeaderName.setText(name);
+                navHeaderEmail.setText(email);
+                if (!image.equals("default")){
+                    Picasso.with(MainActivity.this).load(image).placeholder(R.drawable.ic_face_black_64dp).into(navHeaderImage);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         setTitle("Home");
-
-
     }
 
     @Override
@@ -140,12 +149,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-        startActivity(intent);
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        Intent intent = null;
+        switch (id) {
+            case R.id.action_users:
+                intent = new Intent(MainActivity.this, UsersActivity.class);
+                break;
+            default:
+                return true;
         }
+        startActivity(intent);
 
         return super.onOptionsItemSelected(item);
     }

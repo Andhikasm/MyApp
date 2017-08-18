@@ -26,7 +26,13 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -107,28 +113,47 @@ public class ProfileActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
 
-                StorageReference filePath = mStorageRef.child("profile_images").child(FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg");
+                final File thumb_file = new File(resultUri.getPath());
 
+                File imageFile = null;
+                try {
+                    imageFile = new Compressor(this).setMaxHeight(200).setMaxWidth(200).setQuality(75).compressToFile(thumb_file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                String currentUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                StorageReference filePath = mStorageRef.child("profile_images").child(currentUID + ".jpg");
+                final StorageReference thumb_filePath = mStorageRef.child("profile_images").child("thumbs").child(currentUID + ".jpg");
+
+                final File finalImageFile = imageFile;
                 filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @SuppressWarnings("VisibleForTests")
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
 
                         if(task.isSuccessful()) {
-
                             final String download_url = task.getResult().getDownloadUrl().toString();
-
-                            databaseReference.child("image").setValue(download_url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            thumb_filePath.putFile(Uri.fromFile(finalImageFile)).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if(task.isSuccessful()) {
-                                        Picasso.with(ProfileActivity.this).load(download_url).into(profileImage);
-                                        progressDialog.dismiss();
-                                        Toast.makeText(ProfileActivity.this, "Successfully uploaded", Toast.LENGTH_LONG).show();
-                                    }
+                                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> thumb_task) {
+
+                                    String thumb_download_url = thumb_task.getResult().getDownloadUrl().toString();
+
+                                    Map update = new HashMap<String, String>();
+                                    update.put("image", download_url);
+                                    update.put("thumb_image", thumb_download_url);
+                                    databaseReference.updateChildren(update).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()) {
+                                                Picasso.with(ProfileActivity.this).load(download_url).into(profileImage);
+                                                progressDialog.dismiss();
+                                                Toast.makeText(ProfileActivity.this, "Successfully uploaded", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
                                 }
                             });
-
 
                         }
                         else{
