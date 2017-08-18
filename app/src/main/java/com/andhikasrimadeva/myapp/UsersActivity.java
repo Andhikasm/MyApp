@@ -1,6 +1,7 @@
 package com.andhikasrimadeva.myapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,9 +44,21 @@ public class UsersActivity extends AppCompatActivity {
                 mDatabaseReference
         ) {
             @Override
-            protected void populateViewHolder(UsersViewHolder viewHolder, Users model, int position) {
+            protected void populateViewHolder(UsersViewHolder viewHolder, Users model, final int position) {
+
                 viewHolder.setUserNameView(model.getName());
                 viewHolder.setUserImageView(model.getThumb_image(), getApplicationContext());
+
+                viewHolder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String user_id = getRef(position).getKey();
+                        Intent intent = new Intent(UsersActivity.this, OtherProfileActivity.class);
+                        intent.putExtra("user_id", user_id);
+                        startActivity(intent);
+
+                    }
+                });
             }
         };
         mUsersList.setAdapter(firebaseRecyclerAdapter);
@@ -53,11 +66,13 @@ public class UsersActivity extends AppCompatActivity {
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder{
 
+        View view;
         TextView userNameView;
         CircleImageView userImageView;
 
         public UsersViewHolder(View itemView) {
             super(itemView);
+            view = itemView;
             userNameView = (TextView) itemView.findViewById(R.id.user_single_name);
             userImageView = (CircleImageView) itemView.findViewById(R.id.user_single_image);
         }

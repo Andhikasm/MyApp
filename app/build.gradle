@@ -49,4 +49,7 @@ dependencies {
     compile 'id.zelory:compressor:2.1.0'
 
 }
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 apply plugin: 'com.google.gms.google-services'

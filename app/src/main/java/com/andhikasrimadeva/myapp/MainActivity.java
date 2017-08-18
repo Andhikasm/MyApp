@@ -124,8 +124,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
         setTitle("Home");
-
-
     }
 
     @Override
