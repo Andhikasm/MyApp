@@ -42,6 +42,10 @@ public class OtherProfileActivity extends AppCompatActivity {
     private DatabaseReference mFriendDatabase;
     private FirebaseUser mFirebaseUser;
 
+    private void disableButton(Button button){
+        button.setVisibility(View.INVISIBLE);
+        button.setEnabled(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                 other_profile_name.setText(display_name);
                 Picasso.with(OtherProfileActivity.this).load(image).placeholder(R.mipmap.ic_avatar).into(other_profile_Image);
 
+                // -------------------- FRIEND LIST / REQUEST FEATURE ---------------------
+
                 mFriendReqDatabase.child(mFirebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -90,11 +96,16 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                                 currentState = "req_received";
                                 other_profile_sendRequest.setText("Accept Friend Request");
+
+                                other_profile_declineRequest.setVisibility(View.VISIBLE);
+                                other_profile_declineRequest.setEnabled(true);
                             }
                             else if(req_type.equals("sent")) {
 
                                 currentState = "req_sent";
                                 other_profile_sendRequest.setText("Cancel Friend Request");
+
+                                disableButton(other_profile_declineRequest);
                             }
                         }
                         else {
@@ -106,6 +117,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                                     if(dataSnapshot.hasChild(user_id)) {
                                         currentState = "friends";
                                         other_profile_sendRequest.setText("Unfriend this Person");
+
+                                        disableButton(other_profile_declineRequest);
                                     }
 
                                 }
@@ -158,6 +171,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                                         currentState = "req_sent";
                                         other_profile_sendRequest.setText("Cancel Friend Request");
 
+                                        disableButton(other_profile_declineRequest);
+
                                         Toast.makeText(getApplicationContext(), "Request Sent Successfully", Toast.LENGTH_LONG).show();
                                     }
                                 });
@@ -185,6 +200,8 @@ public class OtherProfileActivity extends AppCompatActivity {
                                     other_profile_sendRequest.setEnabled(true);
                                     currentState = "not_friends";
                                     other_profile_sendRequest.setText("Send Friend Request");
+
+                                    disableButton(other_profile_declineRequest);
                                 }
                             });
                         }
@@ -217,6 +234,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                                                     other_profile_sendRequest.setEnabled(true);
                                                     currentState = "friends";
                                                     other_profile_sendRequest.setText("Unfriend this Person");
+
                                                 }
                                             });
                                         }
