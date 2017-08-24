@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -58,15 +60,33 @@ public class ProfileActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         String uID = firebaseUser.getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(uID);
+        databaseReference.keepSynced(true);
         mStorageRef = FirebaseStorage.getInstance().getReference();
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String name = dataSnapshot.child("name").getValue().toString();
-                String image = dataSnapshot.child("image").getValue().toString();
+                final String image = dataSnapshot.child("image").getValue().toString();
 //                String thumb_image = dataSnapshot.child("thumb_image").getValue().toString();
                 displayName.setText(name);
-                Picasso.with(ProfileActivity.this).load(image).into(profileImage);
+
+                if (!image.equals("default")) {
+                    //Picasso.with(ProfileActivity.this).load(image).into(profileImage);
+
+                    Picasso.with(ProfileActivity.this).load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.mipmap.ic_avatar).into(profileImage, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(ProfileActivity.this).load(image).into(profileImage);
+                        }
+                    });
+                }
+
             }
 
             @Override
