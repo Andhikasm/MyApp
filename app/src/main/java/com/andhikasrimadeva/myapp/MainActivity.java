@@ -153,13 +153,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.action_users:
                 intent = new Intent(MainActivity.this, UsersActivity.class);
+                startActivity(intent);
                 break;
-            default:
-                return true;
         }
-        startActivity(intent);
-
         return super.onOptionsItemSelected(item);
+
     }
 
     private void displaySelectedScreen(int id){

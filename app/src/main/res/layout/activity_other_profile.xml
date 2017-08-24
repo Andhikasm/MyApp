@@ -11,7 +11,7 @@
 
         android:id="@+id/other_profile_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:background="@android:color/darker_gray"
         android:src="@mipmap/ic_avatar" />
 
@@ -19,36 +19,46 @@
         android:id="@+id/other_profile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:text="Display Name"
         android:textColor="@android:color/background_light"
-        android:textSize="30sp" />
-
-    <Button
-        android:id="@+id/other_profile_sendReq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="22dp"
-        android:background="#d50000"
-        android:text="SEND FRIEND REQUEST"
-        android:textColor="@android:color/background_light"
-        android:layout_alignLeft="@+id/other_profile_name"
-        android:layout_alignStart="@+id/other_profile_name"
-        android:layout_alignRight="@+id/other_profile_name"
-        android:layout_alignEnd="@+id/other_profile_name" />
+        android:textSize="30sp"
+        android:layout_marginTop="21dp"
+        android:layout_below="@+id/other_profile_image"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/other_profile_totalFriends"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/other_profile_sendReq"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
         android:text="Total Friends"
         android:textColor="@android:color/background_light"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:layout_marginTop="34dp"
+        android:layout_below="@+id/other_profile_name"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/other_profile_sendReq"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="#d50000"
+        android:text="SEND FRIEND REQUEST"
+        android:textColor="@android:color/background_light"
+        android:layout_above="@+id/other_profile_declineReq"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp" />
+
+    <Button
+        android:id="@+id/other_profile_declineReq"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="#d50000"
+        android:text="DECLINE FRIEND REQUEST"
+        android:textColor="@android:color/background_light"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/other_profile_sendReq"
+        android:layout_alignStart="@+id/other_profile_sendReq"
+        android:layout_marginBottom="16dp" />
 
 
 </RelativeLayout>
