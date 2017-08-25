@@ -25,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class OtherProfileActivity extends AppCompatActivity {
 
@@ -40,6 +41,8 @@ public class OtherProfileActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     private DatabaseReference mFriendReqDatabase;
     private DatabaseReference mFriendDatabase;
+    private DatabaseReference mNotificationDatabase;
+
     private FirebaseUser mFirebaseUser;
 
     private void disableButton(Button button){
@@ -71,6 +74,7 @@ public class OtherProfileActivity extends AppCompatActivity {
         mDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
         mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
         mFriendDatabase = FirebaseDatabase.getInstance().getReference().child("Friends");
+        mNotificationDatabase = FirebaseDatabase.getInstance().getReference().child("Notifications");
         mFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mDatabaseReference.addValueEventListener(new ValueEventListener() {
@@ -167,13 +171,24 @@ public class OtherProfileActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void aVoid) {
 
-                                        other_profile_sendRequest.setEnabled(true);
-                                        currentState = "req_sent";
-                                        other_profile_sendRequest.setText("Cancel Friend Request");
+                                        HashMap<String, String> notificationData = new HashMap<>();
+                                        notificationData.put("from", mFirebaseUser.getUid());
+                                        notificationData.put("type", "request");
 
-                                        disableButton(other_profile_declineRequest);
+                                        mNotificationDatabase.child(user_id).push().setValue(notificationData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
 
-                                        Toast.makeText(getApplicationContext(), "Request Sent Successfully", Toast.LENGTH_LONG).show();
+                                                //other_profile_sendRequest.setEnabled(true);
+                                                currentState = "req_sent";
+                                                other_profile_sendRequest.setText("Cancel Friend Request");
+
+                                                disableButton(other_profile_declineRequest);
+
+                                                Toast.makeText(getApplicationContext(), "Request Sent Successfully", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+
                                     }
                                 });
                             }
