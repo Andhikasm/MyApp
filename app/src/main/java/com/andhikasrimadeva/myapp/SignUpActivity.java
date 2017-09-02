@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 
@@ -94,10 +95,13 @@ public class SignUpActivity extends AppCompatActivity {
                             String uID = mAuth.getCurrentUser().getUid();
                             DatabaseReference myRef = database.getReference().child("Users").child(uID);
 
+                            String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
                             HashMap<String, String> userMap = new HashMap<String, String>();
                             userMap.put("name", name);
                             userMap.put("image", "default");
                             userMap.put("thumb_image", "default");
+                            userMap.put("device_token", deviceToken);
 
                             myRef.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
@@ -105,6 +109,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                                     if(task.isSuccessful()) {
                                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                         startActivity(intent);
                                         finish();
                                     }
