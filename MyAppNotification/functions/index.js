@@ -17,7 +17,7 @@ admin.initializeApp(functions.config().firebase);
  * your requirement
  */
 
-exports.sendNotification = functions.database.ref('/notifications/{user_id}/{notification_id}').onWrite(event => {
+exports.sendNotification = functions.database.ref('/Notifications/{user_id}/{notification_id}').onWrite(event => {
 
 
   /*
@@ -46,7 +46,7 @@ exports.sendNotification = functions.database.ref('/notifications/{user_id}/{not
    * 'fromUser' query retreives the ID of the user who sent the notification
    */
 
-  const fromUser = admin.database().ref(`/notifications/${user_id}/${notification_id}`).once('value');
+  const fromUser = admin.database().ref(`/Notifications/${user_id}/${notification_id}`).once('value');
 
   return fromUser.then(fromUserResult => {
 
@@ -77,7 +77,7 @@ exports.sendNotification = functions.database.ref('/notifications/{user_id}/{not
           title : "New Friend Request",
           body: `${userName} has sent you request`,
           icon: "default",
-          click_action : "in.tvac.akshaye.lapitchat_TARGET_NOTIFICATION"
+          click_action : "com.andhikasrimadeva.myapp_TARGET_NOTIFICATION"
         },
         data : {
           from_user_id : from_user_id
