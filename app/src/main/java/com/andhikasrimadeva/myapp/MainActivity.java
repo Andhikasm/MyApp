@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected DrawerLayout mDrawer;
 
     private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private DatabaseReference mUserRef;
 
     private ViewPager viewPager;
     private SectionsPagerAdapter sectionsPagerAdapter;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setTitle("Home");
 
         mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance().getReference().child("Users").child(mAuth.getCurrentUser().getUid());
 
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -118,6 +120,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        mUserRef.child("online").setValue(true);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mUserRef.child("online").setValue(false);
     }
 
     @Override

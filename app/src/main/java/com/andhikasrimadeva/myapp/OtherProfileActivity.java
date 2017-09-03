@@ -111,7 +111,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                             if (req_type.equals("received")) {
 
                                 currentState = "req_received";
-                                other_profile_sendRequest.setText("Accept Friend Request");
+                                other_profile_sendRequest.setText("Accept Friends Request");
 
                                 other_profile_declineRequest.setVisibility(View.VISIBLE);
                                 other_profile_declineRequest.setEnabled(true);
@@ -119,7 +119,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                             else if(req_type.equals("sent")) {
 
                                 currentState = "req_sent";
-                                other_profile_sendRequest.setText("Cancel Friend Request");
+                                other_profile_sendRequest.setText("Cancel Friends Request");
 
                                 disableButton(other_profile_declineRequest);
                             }
@@ -198,7 +198,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                             } else {
 
                                 currentState = "req_sent";
-                                other_profile_sendRequest.setText("Cancel Friend Request");
+                                other_profile_sendRequest.setText("Cancel Friends Request");
 
                             }
 
@@ -224,7 +224,7 @@ public class OtherProfileActivity extends AppCompatActivity {
 
                                     other_profile_sendRequest.setEnabled(true);
                                     currentState = "not_friends";
-                                    other_profile_sendRequest.setText("Send Friend Request");
+                                    other_profile_sendRequest.setText("Send Friends Request");
 
                                     disableButton(other_profile_declineRequest);
                                 }
@@ -290,7 +290,7 @@ public class OtherProfileActivity extends AppCompatActivity {
                             if(databaseError == null){
 
                                 currentState = "not_friends";
-                                other_profile_sendRequest.setText("Send Friend Request");
+                                other_profile_sendRequest.setText("Send Friends Request");
 
                                 disableButton(other_profile_declineRequest);
 

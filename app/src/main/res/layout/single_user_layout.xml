@@ -41,4 +41,16 @@
         android:text="Default Status"
         android:visibility="invisible" />
 
+    <ImageView
+        android:id="@+id/user_single_online_icon"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_alignTop="@+id/user_single_name"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/user_single_name"
+        android:layout_toRightOf="@+id/user_single_name"
+        android:src="@mipmap/ic_green_dot"
+        android:visibility="invisible" />
+
 </RelativeLayout>
