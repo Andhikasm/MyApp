@@ -56,4 +56,7 @@ dependencies {
 dependencies {
     compile 'com.google.firebase:firebase-messaging:11.0.2'
 }
+dependencies {
+    compile 'com.android.support.constraint:constraint-layout:+'
+}
 apply plugin: 'com.google.gms.google-services'

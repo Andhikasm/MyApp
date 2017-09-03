@@ -2,8 +2,11 @@ package com.andhikasrimadeva.myapp;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -50,9 +53,9 @@ public class FriendsFragment extends Fragment {
         current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         friendsDatabase = FirebaseDatabase.getInstance().getReference().child("Friends").child(current_user_id);
-        //friendsDatabase.keepSynced(true);
+        friendsDatabase.keepSynced(true);
         usersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        //usersDatabase.keepSynced(true);
+        usersDatabase.keepSynced(true);
 
         friendsList.setHasFixedSize(true);
         friendsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -92,6 +95,45 @@ public class FriendsFragment extends Fragment {
 
                         viewHolder.setName(userName);
                         viewHolder.setUserImage(userThumb, getContext());
+
+                        viewHolder.mainView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                CharSequence options[] = new CharSequence[]{"Open Profile", "Send message"};
+
+                                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+
+                                builder.setTitle("Select Options");
+                                builder.setItems(options, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                                        //Click Event for each item.
+                                        if(i == 0){
+
+                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                            profileIntent.putExtra("user_id", list_user_id);
+                                            startActivity(profileIntent);
+
+                                        }
+
+                                        if(i == 1){
+
+                                            Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                            chatIntent.putExtra("user_id", list_user_id);
+                                            chatIntent.putExtra("user_name", userName);
+                                            startActivity(chatIntent);
+
+                                        }
+
+                                    }
+                                });
+
+                                builder.show();
+
+                            }
+                        });
                     }
 
                     @Override

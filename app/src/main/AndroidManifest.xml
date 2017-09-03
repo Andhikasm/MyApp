@@ -13,17 +13,16 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".Chat"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:name=".Chat">
-
+        android:theme="@style/AppTheme">
         <service android:name=".FirebaseMessagingService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
@@ -51,10 +50,12 @@
             tools:targetApi="jelly_bean" />
         <activity android:name=".OtherProfileActivity">
             <intent-filter>
-                <action android:name="com.andhikasrimadeva.myapp_TARGET_NOTIFICATION"></action>
-                <category android:name="android.intent.category.DEFAULT"></category>
+                <action android:name="com.andhikasrimadeva.myapp_TARGET_NOTIFICATION" />
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".ChatActivity"></activity>
     </application>
 
 </manifest>
