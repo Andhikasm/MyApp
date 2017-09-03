@@ -29,4 +29,16 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/user_single_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/user_single_name"
+        android:layout_alignLeft="@+id/user_single_name"
+        android:layout_alignRight="@+id/user_single_name"
+        android:layout_alignStart="@+id/user_single_name"
+        android:layout_below="@+id/user_single_name"
+        android:text="Default Status"
+        android:visibility="invisible" />
+
 </RelativeLayout>
