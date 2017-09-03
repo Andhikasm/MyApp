@@ -51,7 +51,7 @@
             tools:targetApi="jelly_bean" />
         <activity android:name=".OtherProfileActivity">
             <intent-filter>
-                <action android:name="com.andhikasrimadeva.com.myapp_TARGET_NOTIFICATION"></action>
+                <action android:name="com.andhikasrimadeva.myapp_TARGET_NOTIFICATION"></action>
                 <category android:name="android.intent.category.DEFAULT"></category>
             </intent-filter>
         </activity>
