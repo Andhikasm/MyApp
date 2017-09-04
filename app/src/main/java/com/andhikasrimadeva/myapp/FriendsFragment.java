@@ -94,6 +94,7 @@ public class FriendsFragment extends Fragment {
                         }
 
                         viewHolder.setName(userName);
+
                         viewHolder.setUserImage(userThumb, getContext());
 
                         viewHolder.mainView.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +113,7 @@ public class FriendsFragment extends Fragment {
                                         //Click Event for each item.
                                         if(i == 0){
 
-                                            Intent profileIntent = new Intent(getContext(), ProfileActivity.class);
+                                            Intent profileIntent = new Intent(getContext(), OtherProfileActivity.class);
                                             profileIntent.putExtra("user_id", list_user_id);
                                             startActivity(profileIntent);
 
