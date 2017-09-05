@@ -115,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
                 String online = dataSnapshot.child("online").getValue().toString();
                 String image = dataSnapshot.child("image").getValue().toString();
 
-                if(online.equals("Online")) {
+                if(online.equals("true")) {
                     mLastSeenView.setText("Online");
                 }
                 else{
@@ -183,13 +183,30 @@ public class ChatActivity extends AppCompatActivity {
         });
 
         mRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+
             @Override
             public void onRefresh() {
-                mCurrentPage++;
 
-                messagesList.clear();
+                mRootRef.child("Messages").child(mCurrentUserId).child(mChatUser).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        mCurrentPage++;
 
-                loadMessages();
+                        if(dataSnapshot.getChildrenCount() != messagesList.size()){
+                            messagesList.clear();
+                            loadMessages();
+                        }
+                        mMessagesList.scrollToPosition(0);
+
+                        mRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
         });
     }

@@ -2,9 +2,11 @@ package com.andhikasrimadeva.myapp;
 
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,16 +53,21 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
         String from_user = c.getFrom();
 
-//        String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-//        if(from_user.equals(current_user_id)){
+        String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if(from_user.equals(current_user_id)){
 //            viewHolder.messageText.setBackgroundColor(Color.WHITE);
 //            viewHolder.messageText.setTextColor(Color.BLACK);
-//        }
-//        else {
-//            viewHolder.messageText.setBackgroundResource(R.drawable.message_text_background);
-//            viewHolder.messageText.setTextColor(Color.BLACK);
-//        }
+            viewHolder.messageText.setBackgroundResource(R.drawable.my_message_text_background);
+            viewHolder.mainView.setGravity(Gravity.END);
+            viewHolder.messageText.setTextColor(Color.BLACK);
+        }
+        else {
+            //viewHolder.profileImage.setVisibility(View.VISIBLE);
+            viewHolder.mainView.setGravity(Gravity.START);
+            viewHolder.messageText.setBackgroundResource(R.drawable.message_text_background);
+            viewHolder.messageText.setTextColor(Color.WHITE);
+        }
 
         mUserDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(from_user);
 
@@ -93,14 +100,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return mMessageList.size();
     }
 
-    public class MessageViewHolder extends RecyclerView.ViewHolder {
+    class MessageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView messageText;
-        public CircleImageView profileImage;
-        public TextView displayName;
+        RelativeLayout mainView;
+        TextView messageText;
+        CircleImageView profileImage;
+        TextView displayName;
 
-        public MessageViewHolder(View view) {
+        MessageViewHolder(View view) {
             super(view);
+            mainView = (RelativeLayout) view;
 
             messageText = (TextView) view.findViewById(R.id.message_text_layout);
             profileImage = (CircleImageView) view.findViewById(R.id.message_profile_layout);
