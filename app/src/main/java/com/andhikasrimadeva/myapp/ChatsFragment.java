@@ -2,6 +2,7 @@ package com.andhikasrimadeva.myapp;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -76,6 +77,17 @@ public class ChatsFragment extends Fragment {
                         final String userName = dataSnapshot.child("name").getValue().toString();
 
                         viewHolder.setName(userName);
+
+                        viewHolder.mainView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                Intent chatIntent = new Intent(getContext(), ChatActivity.class);
+                                chatIntent.putExtra("user_id", list_user_id);
+                                chatIntent.putExtra("user_name", userName);
+                                startActivity(chatIntent);
+                            }
+                        });
                     }
 
                     @Override
@@ -83,6 +95,8 @@ public class ChatsFragment extends Fragment {
 
                     }
                 });
+
+
             }
         };
 
