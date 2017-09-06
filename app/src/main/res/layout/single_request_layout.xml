@@ -53,4 +53,28 @@
         android:src="@mipmap/ic_green_dot"
         android:visibility="invisible" />
 
+    <Button
+        android:id="@+id/accept_request_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        android:textColor="#FFFFFF"
+        android:background="#388E3C"
+        android:layout_below="@+id/user_single_status"
+        android:layout_alignLeft="@+id/user_single_status"
+        android:layout_alignStart="@+id/user_single_status" />
+
+    <Button
+        android:background="#d32f2f"
+        android:textColor="#FFFFFF"
+        android:id="@+id/decline_request_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_single_status"
+        android:layout_marginLeft="11dp"
+        android:layout_marginStart="11dp"
+        android:layout_toEndOf="@+id/accept_request_button"
+        android:layout_toRightOf="@+id/accept_request_button"
+        android:text="Button" />
+
 </RelativeLayout>
