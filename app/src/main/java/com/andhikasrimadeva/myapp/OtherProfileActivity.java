@@ -309,8 +309,32 @@ public class OtherProfileActivity extends AppCompatActivity {
                     });
 
                 }
+
+
             }
         });
 
+
+        // --------------- Decline Request ------------
+        other_profile_declineRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Map declineReqMap = new HashMap();
+                declineReqMap.put("Friend_req/" + user_id + "/" + mFirebaseUser.getUid(), null);
+                declineReqMap.put("Friend_req/" + mFirebaseUser.getUid() + "/" + user_id, null);
+
+                mRootRef.updateChildren(declineReqMap, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                        currentState = "not_friends";
+                        other_profile_sendRequest.setText("Send Friends Request");
+
+                        disableButton(other_profile_declineRequest);
+                    }
+                });
+            }
+        });
     }
 }
