@@ -1,4 +1,4 @@
-package google;
+package com.andhikasrimadeva.myapp.google;
 
 import android.content.Context;
 import android.net.Uri;
