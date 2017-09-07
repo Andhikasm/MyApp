@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -68,6 +69,12 @@ public class RequestsFragment extends Fragment {
             @Override
             protected void populateViewHolder(final RequestsViewHolder viewHolder, Requests model, int position) {
                 final String list_user_id = getRef(position).getKey();
+                String request_type = model.getRequest_type();
+                if(request_type.equals("received")) {
+                    viewHolder.sendButton.setVisibility(View.INVISIBLE);
+                    viewHolder.acceptButton.setVisibility(View.VISIBLE);
+                    viewHolder.declineButton.setVisibility(View.VISIBLE);
+                }
 
                 mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -94,6 +101,9 @@ public class RequestsFragment extends Fragment {
         TextView userNameView;
         TextView userStatusView;
         CircleImageView userImageView;
+        Button sendButton;
+        Button acceptButton;
+        Button declineButton;
 
         public RequestsViewHolder(View itemView) {
             super(itemView);
@@ -101,7 +111,9 @@ public class RequestsFragment extends Fragment {
             userNameView = (TextView) mainView.findViewById(R.id.user_single_name);
             userStatusView = (TextView) mainView.findViewById(R.id.user_single_status);
             userImageView = (CircleImageView) mainView.findViewById(R.id.user_single_image);
-
+            sendButton = (Button) mainView.findViewById(R.id.send_request_button);
+            acceptButton = (Button) mainView.findViewById(R.id.accept_request_button);
+            declineButton = (Button) mainView.findViewById(R.id.decline_request_button);
         }
 
         public void setName(String name){

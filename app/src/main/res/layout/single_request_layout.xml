@@ -41,32 +41,30 @@
         android:text="Default Status"
         android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/user_single_online_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_alignTop="@+id/user_single_name"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_toEndOf="@+id/user_single_name"
-        android:layout_toRightOf="@+id/user_single_name"
-        android:src="@mipmap/ic_green_dot"
-        android:visibility="invisible" />
-
     <Button
         android:id="@+id/accept_request_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        android:textColor="#FFFFFF"
-        android:background="#388E3C"
-        android:layout_below="@+id/user_single_status"
         android:layout_alignLeft="@+id/user_single_status"
-        android:layout_alignStart="@+id/user_single_status" />
+        android:layout_alignStart="@+id/user_single_status"
+        android:layout_below="@+id/user_single_status"
+        android:background="#388E3C"
+        android:text="Accept"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible" />
 
     <Button
-        android:background="#d32f2f"
-        android:textColor="#FFFFFF"
+        android:id="@+id/send_request_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/user_single_status"
+        android:layout_alignStart="@+id/user_single_status"
+        android:layout_below="@+id/user_single_status"
+        android:background="#1976D2"
+        android:text="Sent"
+        android:textColor="#FFFFFF" />
+
+    <Button
         android:id="@+id/decline_request_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,6 +73,9 @@
         android:layout_marginStart="11dp"
         android:layout_toEndOf="@+id/accept_request_button"
         android:layout_toRightOf="@+id/accept_request_button"
-        android:text="Button" />
+        android:background="#d32f2f"
+        android:text="Decline"
+        android:textColor="#FFFFFF"
+        android:visibility="invisible" />
 
 </RelativeLayout>
