@@ -4,17 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="wrap_content">
 
+    <!--<View-->
+        <!--android:id="@+id/view"-->
+        <!--android:layout_width="300dp"-->
+        <!--android:layout_height="1dp"-->
+        <!--android:layout_below="@id/user_single_image"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:background="#9E9E9E" />-->
+
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_single_image"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@drawable/ic_face_black_64dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginLeft="23dp"
         android:layout_marginStart="23dp"
-        android:layout_marginTop="23dp"
-        android:id="@+id/user_single_image" />
+        android:layout_marginTop="12dp"
+        android:src="@mipmap/ic_avatar" />
 
     <TextView
         android:id="@+id/user_single_name"
@@ -26,20 +35,22 @@
         android:layout_toEndOf="@+id/user_single_image"
         android:layout_toRightOf="@+id/user_single_image"
         android:text="Default Name"
+        android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/user_single_status"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/user_single_name"
         android:layout_alignLeft="@+id/user_single_name"
-        android:layout_alignRight="@+id/user_single_name"
         android:layout_alignStart="@+id/user_single_name"
         android:layout_below="@+id/user_single_name"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Default Status"
-        android:visibility="invisible" />
+        android:textSize="16sp" />
 
     <ImageView
         android:id="@+id/user_single_online_icon"

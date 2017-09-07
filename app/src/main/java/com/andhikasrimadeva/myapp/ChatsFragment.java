@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
@@ -70,13 +72,31 @@ public class ChatsFragment extends Fragment {
             @Override
             protected void populateViewHolder(final ChatsViewHolder viewHolder, Chats model, int position) {
                 final String list_user_id = getRef(position).getKey();
+                Query query = mMessagesDatabase.child(list_user_id).orderByKey().limitToLast(1);
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        viewHolder.setChat(dataSnapshot.getChildren().iterator().next().child("message").getValue().toString());
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
                 mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+
                         final String userName = dataSnapshot.child("name").getValue().toString();
+                        String userThumb = dataSnapshot.child("thumb_image").getValue().toString();
 
                         viewHolder.setName(userName);
+
+                        viewHolder.setUserImage(userThumb, getContext());
 
                         viewHolder.mainView.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -98,6 +118,7 @@ public class ChatsFragment extends Fragment {
 
 
             }
+
         };
 
         chatsList.setAdapter(chatsRecyclerViewAdapter);
@@ -115,11 +136,12 @@ public class ChatsFragment extends Fragment {
             mainView = itemView;
             userNameView = (TextView) mainView.findViewById(R.id.user_single_name);
             userStatusView = (TextView) mainView.findViewById(R.id.user_single_status);
+            userStatusView.setVisibility(View.VISIBLE);
             userImageView = (CircleImageView) mainView.findViewById(R.id.user_single_image);
         }
 
-        public void setDate(String date){
-            userStatusView.setText(date);
+        public void setChat(String chat){
+            userStatusView.setText(chat);
         }
 
         public void setName(String name){
