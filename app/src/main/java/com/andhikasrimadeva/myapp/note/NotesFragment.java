@@ -89,8 +89,16 @@ public class NotesFragment extends Fragment {
                 mNotesDatabase
         ) {
             @Override
-            protected void populateViewHolder(NotesViewHolder viewHolder, Notes model, int position) {
+            protected void populateViewHolder(NotesViewHolder viewHolder, Notes model, final int position) {
 
+                viewHolder.mainView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getContext(), EditNoteActivity.class);
+                        intent.putExtra("Note_id", getRef(position).getKey());
+                        startActivity(intent);
+                    }
+                });
                 viewHolder.setNoteTitle(model.getTitle());
                 viewHolder.setNoteContent(model.getContent());
             }

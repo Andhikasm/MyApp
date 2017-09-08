@@ -9,10 +9,12 @@ import android.widget.Toast;
 
 import com.andhikasrimadeva.myapp.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +36,10 @@ public class EditNoteActivity extends AppCompatActivity {
 
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mNotesDatabase = FirebaseDatabase.getInstance().getReference().child("Notes").child(user_id);
+
+        if (getIntent().getStringExtra("Note_id") != null){
+            editNote();
+        }
     }
 
     @Override
@@ -53,6 +59,26 @@ public class EditNoteActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void editNote(){
+        String note_id = getIntent().getStringExtra("Note_id");
+        DatabaseReference nodeRef = mNotesDatabase.child(note_id);
+        nodeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String title = dataSnapshot.child("title").getValue().toString();
+                String content = dataSnapshot.child("content").getValue().toString();
+
+                noteTitle.setText(title);
+                noteContent.setText(content);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void saveNote(){
