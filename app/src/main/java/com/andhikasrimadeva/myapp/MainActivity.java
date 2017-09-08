@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabLayout = (TabLayout) findViewById(R.id.main_tabs_layout);
         tabLayout.setupWithViewPager(viewPager);
+        viewPager.setCurrentItem(1);
 
         navHeaderImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,7 +143,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            //super.onBackPressed();
         }
     }
 
@@ -176,9 +180,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.chat_app:
-//                intent = new Intent(getApplicationContext(), MainActivity.class);
-//
-//                startActivity(intent);
+                intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+
                 break;
             case R.id.notes_app:
                 fragment = new NotesFragment();
