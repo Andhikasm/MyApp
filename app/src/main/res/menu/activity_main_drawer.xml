@@ -2,19 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/calculator"
-            android:icon="@drawable/ic_grid_on_black_24dp"
-            android:title="Calculator" />
-        <item
-            android:id="@+id/notebook"
-            android:icon="@drawable/ic_class_black_24dp"
-            android:title="Notebook" />
 
-        <item
-            android:id="@+id/google"
-            android:icon="@drawable/ic_search_black_24dp"
-            android:title="Google"/>
+        <item android:id="@+id/chat_app"
+            android:title="Chat"
+            android:icon="@drawable/ic_chat"/>
+
+        <item android:id="@+id/notes_app"
+            android:title="Notes"
+            android:icon="@drawable/ic_note"/>
+
+        <!--<item-->
+            <!--android:id="@+id/calculator"-->
+            <!--android:icon="@drawable/ic_grid_on_black_24dp"-->
+            <!--android:title="Calculator" />-->
+        <!--<item-->
+            <!--android:id="@+id/notebook"-->
+            <!--android:icon="@drawable/ic_class_black_24dp"-->
+            <!--android:title="Notebook" />-->
+
+        <!--<item-->
+            <!--android:id="@+id/google"-->
+            <!--android:icon="@drawable/ic_search_black_24dp"-->
+            <!--android:title="Google"/>-->
     </group>
 
     <item

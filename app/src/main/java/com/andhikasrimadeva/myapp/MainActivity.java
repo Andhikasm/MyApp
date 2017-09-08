@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.andhikasrimadeva.myapp.note.NotesFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -174,17 +175,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment fragment = null;
 
         switch (id){
-            case R.id.calculator:
-                fragment = new CalculatorActivity();
+            case R.id.chat_app:
+//                intent = new Intent(getApplicationContext(), MainActivity.class);
+//
+//                startActivity(intent);
                 break;
-            case R.id.notebook:
-                fragment = new NotebookFragment();
+            case R.id.notes_app:
+                fragment = new NotesFragment();
                 break;
-            case R.id.google:
-                fragment = new GoogleFragment();
-                break;
+//            case R.id.calculator:
+//                fragment = new CalculatorActivity();
+//                break;
+//            case R.id.notebook:
+//                fragment = new NotebookFragment();
+//                break;
+//            case R.id.google:
+//                fragment = new GoogleFragment();
+//                break;
             case R.id.settings:
-                intent = new Intent(this, SettingsActivity.class);
+                intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);
         }
         if(fragment != null){
