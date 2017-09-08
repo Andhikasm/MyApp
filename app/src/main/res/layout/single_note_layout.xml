@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
+        android:textColor="#000000"
         android:id="@+id/single_note_title"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -20,10 +21,11 @@
         android:layout_alignParentEnd="true" />
 
     <TextView
+        android:textColor="#000000"
         android:ellipsize="end"
         android:id="@+id/single_note_content"
         android:layout_width="wrap_content"
-        android:layout_height="100dp"
+        android:layout_height="60dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"

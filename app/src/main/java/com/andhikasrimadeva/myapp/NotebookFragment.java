@@ -104,7 +104,7 @@ public class NotebookFragment extends Fragment{
         Fragment fragment = null;
 
         switch (item.getItemId()) {
-            case R.id.action_create: //run EditNoteFragment in new note mode
+            case R.id.new_note_menu: //run EditNoteFragment in new note mode
 //                startActivity(new Intent(this, EditNoteFragment.class));
                 fragment = new EditNoteFragment();
                 break;

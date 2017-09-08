@@ -32,8 +32,8 @@ public class EditNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         this.parentView = inflater.inflate(R.layout.activity_note, container, false).getRootView();
 
-        mEtTitle = (EditText) parentView.findViewById(R.id.note_et_title);
-        mEtContent = (EditText) parentView.findViewById(R.id.note_et_content);
+        mEtTitle = (EditText) parentView.findViewById(R.id.note_title_edittext);
+        mEtContent = (EditText) parentView.findViewById(R.id.note_content_edittext);
         setHasOptionsMenu(true);
         //check if view/edit note bundle is set, otherwise user wants to create new note
         if(getArguments() != null){

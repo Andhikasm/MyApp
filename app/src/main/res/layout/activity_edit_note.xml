@@ -18,7 +18,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:hint="title"
+        android:hint="Title"
         android:maxLines="1" />
 
     <EditText
@@ -33,6 +33,6 @@
         android:layout_alignRight="@+id/note_title_edittext"
         android:layout_alignEnd="@+id/note_title_edittext"
         android:layout_alignParentBottom="true"
-        android:hint="enter your note"
+        android:hint="Enter your note"
         android:gravity="top"/>
 </RelativeLayout>

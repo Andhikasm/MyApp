@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
     private SectionsPagerAdapter sectionsPagerAdapter;
     private TabLayout tabLayout;
+    private static boolean active;
 
     private CircleImageView navHeaderImage;
     private TextView navHeaderName;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onStart() {
         super.onStart();
-
+        active = true;
         String uID = mAuth.getCurrentUser().getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference databaseReference = database.getReference("Users").child(uID);
@@ -143,10 +144,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            //super.onBackPressed();
+            if(active) {
+                super.onBackPressed();
+            }
+            else{
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
         }
     }
 
@@ -180,10 +185,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (id){
             case R.id.chat_app:
-                intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-
+                if (!active) {
+                    intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
                 break;
             case R.id.notes_app:
                 fragment = new NotesFragment();
@@ -202,6 +208,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
         }
         if(fragment != null){
+            active = false;
             RelativeLayout r = (RelativeLayout) findViewById(R.id.content_main);
             r.removeAllViews();
             tabLayout.setVisibility(View.GONE);

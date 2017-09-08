@@ -1,17 +1,23 @@
 package com.andhikasrimadeva.myapp.note;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.andhikasrimadeva.myapp.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class NotesFragment extends Fragment {
 
     private DatabaseReference mNotesDatabase;
+    private String user_id;
 
     private RecyclerView notesList;
 
@@ -34,12 +41,41 @@ public class NotesFragment extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_notes, container, false);
 
         notesList = (RecyclerView) mainView.findViewById(R.id.notes_list);
-        mNotesDatabase = FirebaseDatabase.getInstance().getReference().child("Notes");
 
+        user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mNotesDatabase = FirebaseDatabase.getInstance().getReference().child("Notes").child(user_id);
+        setHasOptionsMenu(true);
         notesList.setHasFixedSize(true);
         notesList.setLayoutManager(new LinearLayoutManager(getContext()));
         // Inflate the layout for this fragment
         return mainView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle("Notes");
+        super.onViewCreated(view, savedInstanceState);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.menu_notebook, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.new_note_menu:
+                Intent intent = new Intent(getContext(), EditNoteActivity.class);
+                startActivity(intent);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
