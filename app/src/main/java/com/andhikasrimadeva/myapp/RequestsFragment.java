@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,6 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,6 +37,7 @@ public class RequestsFragment extends Fragment {
 
     private DatabaseReference mFriendReqDatabase;
     private DatabaseReference mUsersDatabase;
+    private DatabaseReference mRootRef;
     private String user_id;
 
     private RecyclerView requestsList;
@@ -48,7 +55,8 @@ public class RequestsFragment extends Fragment {
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         requestsList = (RecyclerView) mainView.findViewById(R.id.requests_list);
         mUsersDatabase = FirebaseDatabase.getInstance().getReference().child("Users");
-        mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req").child(user_id);
+        mFriendReqDatabase = FirebaseDatabase.getInstance().getReference().child("Friend_req");
+        mRootRef = FirebaseDatabase.getInstance().getReference();
 
         requestsList.setHasFixedSize(true);
         requestsList.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -64,7 +72,7 @@ public class RequestsFragment extends Fragment {
                 Requests.class,
                 R.layout.single_request_layout,
                 RequestsViewHolder.class,
-                mFriendReqDatabase
+                mFriendReqDatabase.child(user_id)
         ) {
             @Override
             protected void populateViewHolder(final RequestsViewHolder viewHolder, Requests model, int position) {
@@ -74,7 +82,30 @@ public class RequestsFragment extends Fragment {
                     viewHolder.sendButton.setVisibility(View.INVISIBLE);
                     viewHolder.acceptButton.setVisibility(View.VISIBLE);
                     viewHolder.declineButton.setVisibility(View.VISIBLE);
+
+                    viewHolder.acceptButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            acceptRequest(list_user_id, "Request Accepted");
+                        }
+                    });
+
+                    viewHolder.declineButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            declineRequest(list_user_id, "Request Declined");
+                        }
+                    });
                 }
+                else {
+                    viewHolder.sendButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            declineRequest(list_user_id, "Request Canceled");
+                        }
+                    });
+                }
+
 
                 mUsersDatabase.child(list_user_id).addValueEventListener(new ValueEventListener() {
                     @Override
@@ -128,5 +159,51 @@ public class RequestsFragment extends Fragment {
 
         }
     }
+
+    private void declineRequest(String user_id, final String toastMessage) {
+
+        Map declineReqMap = new HashMap();
+        declineReqMap.put("Friend_req/" + user_id + "/" + this.user_id, null);
+        declineReqMap.put("Friend_req/" + this.user_id + "/" + user_id, null);
+
+        mRootRef.updateChildren(declineReqMap, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                if(databaseError == null) {
+                    Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void acceptRequest(String user_id, final String toastMessage) {
+
+        final String currentDate = DateFormat.getDateInstance().format(new Date());
+
+        Map friendsMap = new HashMap();
+        friendsMap.put("Friends/" + this.user_id + "/" + user_id + "/date", currentDate);
+        friendsMap.put("Friends/" + user_id + "/"  + this.user_id + "/date", currentDate);
+        friendsMap.put("Friend_req/" + this.user_id + "/" + user_id, null);
+        friendsMap.put("Friend_req/" + user_id + "/" + this.user_id, null);
+
+        mRootRef.updateChildren(friendsMap, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+
+                if (databaseError == null) {
+                    Toast.makeText(getContext(), toastMessage, Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(getContext(), databaseError.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+
 
 }
